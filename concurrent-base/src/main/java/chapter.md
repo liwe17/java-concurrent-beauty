@@ -17,7 +17,41 @@
 2.实现Runnable,则只能使用主线程里面被声明为final的变量.
 3.使用FutureTask,可以拿到任务的返回结果.
 
+涉及代码:com.weiliai.chapter1.ThreadTest
+
 ##线程的通知与等待
+wait()函数:当一个线程调用一个共享变量的wait()方法时,该调用线程就会被阻塞挂起,直到发生如下情况,才能被唤醒:
+1.其他线程调用该共享对象的notify()或者notifyAll()方法.
+2.其他线程调用了该线程的interrupt()方法,该线程抛出InterruptException异常返回.
+
+备注:如果调用wait()方法的线程没有预先获取该对象的监视器锁,则调用wait()会抛出IllegalMonitorStateException异常.
+获取方式:
+1.执行synchronized同步代码块时,使用共享变量作为参数:
+synchronized(共享变量){
+    //do something
+}
+2.调用该共享变量的方法,并且该方法使用synchronized修饰:
+synchronized void methodName(){
+    //do something
+}
+
+虚假唤醒:一个线程可以从挂起状态变为可以运行状态（也就是被唤醒），即使该线程没有被其他线程调用notify()、notifyAll()方法进行通知，
+或者被中断，或者等待超时，这就是虚假唤醒.
+涉及代码:com.weiliai.chapter1.SpuriousWakeupTest
+
+当一个线程调用共享变量的wait()方法时,当前线程只会释放当前共享变量的锁,当前线程持有其他共享对象的监视器锁不会被释放.
+涉及代码:com.weiliai.chapter1.WaitReleaseLock
+
+当一个线程调用共享对象wait()方法被阻塞挂起后,如果其他线程中断了线程,则该线程会抛出InterruptException异常返回.
+涉及代码:com.weiliai.chapter1.WaitNotifyInterrupt
+
+wait(long timeout):多了一个超时时间,在等待期间如果没有其他线程唤醒(notify/notifyAll)该线程,该线程仍然会在超过timeout时间后自动返回.
+
+wait(long timeout, int nanos):两个参数,毫秒timeout,纳秒nanos,其内部还是调用的wait(long timeout)方法,只不多对于第二个参数纳秒,
+如果其范围是大于0,小于一百万的话(1毫秒=100 0000纳秒),则将timeout加一秒,调用wait(long timeout)
+
+notify()/notifyAll():唤醒在同一个共享变量上等待的线程,区别:一个唤醒一个,一个唤醒所有.
 
 
-
+##参考资料
+https://www.cnblogs.com/nxzblogs/p/11318671.html
