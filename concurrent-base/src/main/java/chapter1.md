@@ -51,6 +51,22 @@ wait(long timeout, int nanos):两个参数,毫秒timeout,纳秒nanos,其内部�
 如果其范围是大于0,小于一百万的话(1毫秒=100 0000纳秒),则将timeout加一秒,调用wait(long timeout)
 
 notify()/notifyAll():唤醒在同一个共享变量上等待的线程,区别:一个唤醒一个,一个唤醒所有.
+涉及代码:com.weiliai.chapter1.NotifyTest
+
+等待线程执行完毕:当调用join方法(该方法属于Thread类)时,就会等待线程执行完毕后,在继续向下运行.
+涉及代码:com.weiliai.chapter1.JoinTest
+
+sleep方法:Thread中的静态方法sleep(),当一个线程调用了sleep方法后,会短暂的让出cpu执行权(也就是不参与cpu的调度),但是线程拥有的锁等资
+源是不释放的,这一点和wait方法不同
+涉及代码:com.weiliai.chapter1.SleepTest
+
+yield方法:Thread中的静态方法yield(),当一个线程调用了Thread.yield()时,表名当前线程放弃cpu的使用权,yield之后,当前线程处于就绪状态.
+线程调度器会从包括该线程的所有线程中随机选出一个线程分配cpu执行时间片
+涉及代码:com.weiliai.chapter1.YieldTest
+
+sleep和yield方法的区别在于,当线程调用sleep方法时调用线程会被阻塞挂起指定时间,在这期间线程调度器不会去调度该线程,而调用yield方法,
+线程只是让出剩余的时间片,并没有被阻塞挂起,而是处理就绪状态,线程调度器下一次调度,仍有可能调度到当前线程
+
 
 
 ##参考资料
