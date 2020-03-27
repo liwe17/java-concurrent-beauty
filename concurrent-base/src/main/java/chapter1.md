@@ -67,6 +67,15 @@ yield方法:Thread中的静态方法yield(),当一个线程调用了Thread.yield
 sleep和yield方法的区别在于,当线程调用sleep方法时调用线程会被阻塞挂起指定时间,在这期间线程调度器不会去调度该线程,而调用yield方法,
 线程只是让出剩余的时间片,并没有被阻塞挂起,而是处理就绪状态,线程调度器下一次调度,仍有可能调度到当前线程
 
+线程中断:Java中线程中断是一种线程间的协作模式,通过设置线程的中断标志并不能直接终止该线程的执行,而是被中断的线程根据中断状态自行处理.
+
+void interrupt()方法:中断线程,例:当线程A运行时,线程B可以调用线程A的interrupt()方法来设置中断标志为true并返回,仅仅是设置标识,线程
+A实际并没有被中断,仍会继续执行,如果线程A因为调用了wait,join,sleep方法,这时候若线程B调用了线程A的interrupt()方法,线程A会在调用这些
+方法的地方抛出InterruptedException
+boolean isInterrupted()方法:检测当前线程是否被中断,如果是返回true,否则返回false.
+boolean interrupted()方法:检测当前线程是否中断,如果是返回true,否则返回false,如果当前线程被中断,则会清楚中断标识.
+涉及代码:com.weiliai.chapter1.InterruptTest
+
 
 
 ##参考资料
