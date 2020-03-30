@@ -1,0 +1,6 @@
+#Java并发包中ThreadLocalRandom类原理剖析
+java并发包中的ThreadLocalRandom类,jdk1.7增加的随机数生成器
+
+Random类的缺点:是多个线程使用同一个原子性的种子变量,导致对原子变量的更新产生竞争,降低了效率.
+Random类是线程安全的,但是多线程环境下操作统一实例时,会有效率问题,jdk1.7之后可以使用ThreadLocalRandom类,1.7之前保证多个线程都有一
+个自己的Random实例即可
