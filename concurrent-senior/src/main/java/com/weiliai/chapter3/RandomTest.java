@@ -1,4 +1,4 @@
-package weiliai.chapter3;
+package com.weiliai.chapter3;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
