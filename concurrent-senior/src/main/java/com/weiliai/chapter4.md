@@ -3,4 +3,18 @@
 AtomicInteger/AtomicLong/AtomicBoolean等原子操作类,这些类都是基于都是基于非阻塞算法CAS实现的.
 核心方法:compareAndSet(expect,update)-->预期值expect,更新值update
 
-涉及的代码:
+原子操作类提供了原子操作(虽然是无阻塞的CAS操作,相对于阻塞算法提升了很多)但是在高并发情况下,会竞争更新同一个原子变量,仍然会有效率问题
+
+涉及的代码:com.weiliai.chapter4.AtomicTest
+
+##JDK中新增的原子操作类LongAdder
+为了解决高并发情况下多线程对一个共享变量的CAS争夺失败后进行自旋而造成的降低并发性能的问题,LongAdder在内部维护了一个cell元素(一个动
+态的cell数组)来分担对单个变量进行争夺的开销,也就是将对一个变量的争夺分配到对多个变量的争夺上.
+
+LongAdder维护了一个延迟初始化的原子性更新数组(默认情况下Cell数组为null)和一个基值变量base,由于Cell占用内存是相对较大,所以一开始并
+不创建,而是在需要时创建,也就是惰性加载.
+当一开始判断Cell数组是null并且并发线程较少时,所有的累加操作都是对base变量进行的.保持Cell数组始终为2的N次方,初始化时Cell数组中Cell
+元素个数为2,数组里面的变量实体为Cell类型,Cell类型是AtomicLong的一个改进,用来减少缓存的争用,也就是解决伪共享问题.
+
+##LongAccumulator类原理探究
+LongAccumulator类:LongAdder是LongAccumulator的一个特例,后者提供了更加强大的功能,可以让用户自定义累加规则
