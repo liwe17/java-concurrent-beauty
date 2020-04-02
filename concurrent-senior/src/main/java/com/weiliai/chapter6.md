@@ -72,8 +72,22 @@ void unlock()方法
 ##读写锁ReentrantReadWriteLock的原理
 ReentrantReadWriteLock采用读写分离的策略,须臾多个线程同时获取读锁,适用于写少读多的场景.
 
+void lock()方法
+void lockInterruptibly()方法
+boolean tryLock(long timeout,TimeUnit unit)方法
+void unlock()方法
 
+##JDK8中新增的StampedLock锁探究
+该锁是jdk8中新增的,提供了3中模式的读写控制:
 
+当调用获取锁的函数时,会返回一个long类型的变量,也就是戳记(stamp),代表锁的状态.
+当调用释放锁和转换锁的时候,需要将该stamp作为参数传入.
+　　
+写锁writeLock:是一个独占锁,同一时间只能有一个线程可以获取锁(并且是不可重入锁)
+悲观读锁readLock:是一个共享锁,在没有线程获取的情况下多个线程可以获取到锁,但是只要有线程获取到写锁,则获取读锁的线程都会阻塞(同时该锁也是不可冲入锁)
+乐观读锁tryOptimisticRead
+
+涉及的代码:com.weiliai.chapter6.Point
 
 
 
